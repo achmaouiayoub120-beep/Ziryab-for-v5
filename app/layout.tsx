@@ -37,7 +37,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body 
-        className="min-h-full flex flex-col relative bg-background text-foreground font-sans"
+        className="min-h-full flex flex-col relative font-sans"
+        style={{ backgroundColor: '#0e0f14', color: '#F0F0F5' }}
         suppressHydrationWarning
       >
         <LanguageWrapper>

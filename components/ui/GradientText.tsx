@@ -10,7 +10,7 @@ interface GradientTextProps {
 export function GradientText({
   children,
   className,
-  gradient = "linear-gradient(135deg, var(--accent), #06B6D4)",
+  gradient = "linear-gradient(135deg, #E84D2A, #FF6242, #00E5FF)",
 }: GradientTextProps) {
   return (
     <span

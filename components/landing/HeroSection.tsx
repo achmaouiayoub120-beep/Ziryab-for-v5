@@ -2,104 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { GradientText } from "@/components/ui/GradientText";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Button } from "@/components/ui/Button";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
-const wordAnimation = {
-  hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { delay: 0.3 + i * 0.08, duration: 0.5, ease: [0, 0, 0.2, 1] },
-  }),
-};
-
-function DashboardMockup() {
-  const { t } = useLanguage();
-  return (
-    <div
-      className="relative w-full max-w-lg mx-auto animate-float"
-      style={{ perspective: "1200px" }}
-    >
-      <div
-        className="elite-card p-6 md:p-8"
-        style={{ transform: "rotateY(-4deg) rotateX(2deg)" }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <p className="text-xs text-[var(--text-muted)] font-mono uppercase tracking-wider">Dashboard</p>
-            <p className="text-lg font-display font-bold text-[var(--text-primary)]">Gestion de Projet</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[var(--success)]" />
-            <span className="text-xs text-[var(--success)] font-bold">En ligne</span>
-          </div>
-        </div>
-
-        {/* Progress bars */}
-        <div className="space-y-4 mb-6">
-          {[
-            { label: "Design UI/UX", progress: 92, color: "var(--accent)" },
-            { label: "Développement", progress: 67, color: "#06B6D4" },
-            { label: "Tests & QA", progress: 45, color: "var(--gold)" },
-          ].map((item) => (
-            <div key={item.label}>
-              <div className="flex justify-between text-xs mb-1.5">
-                <span className="text-[var(--text-secondary)] font-medium">{item.label}</span>
-                <span className="font-mono font-bold text-[var(--text-primary)]">{item.progress}%</span>
-              </div>
-              <div className="w-full h-2 bg-[var(--bg-alt)] rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{ backgroundColor: item.color }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${item.progress}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Mini chart (SVG) */}
-        <div className="bg-[var(--bg)] rounded-lg p-4 mb-4">
-          <p className="text-xs text-[var(--text-muted)] mb-3">Performance mensuelle</p>
-          <svg viewBox="0 0 200 60" className="w-full h-12">
-            <defs>
-              <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path d="M0,45 Q25,40 50,30 T100,25 T150,15 T200,10 L200,60 L0,60 Z" fill="url(#chartGrad)" />
-            <path d="M0,45 Q25,40 50,30 T100,25 T150,15 T200,10" fill="none" stroke="var(--accent)" strokeWidth="2" />
-          </svg>
-        </div>
-
-        {/* Status badges */}
-        <div className="flex flex-wrap gap-2">
-          {["React", "Node.js", "AWS"].map((tech) => (
-            <span key={tech} className="px-3 py-1 text-xs font-mono font-bold bg-[var(--accent-light)] text-[var(--accent)] rounded-full">
-              {tech}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function HeroSection() {
   const { t, language } = useLanguage();
   const slides = t("hero.slides") || [];
   const isSlidesArray = Array.isArray(slides) && slides.length > 0;
-  
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
 
@@ -125,207 +38,235 @@ export default function HeroSection() {
 
   const slideVariants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 100 : -100,
+      y: dir > 0 ? 60 : -60,
       opacity: 0,
-      filter: "blur(10px)",
+      filter: "blur(12px)",
     }),
     center: {
-      x: 0,
+      y: 0,
       opacity: 1,
       filter: "blur(0px)",
-      transition: { duration: 0.6, ease: [0, 0, 0.2, 1] },
+      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? -100 : 100,
+      y: dir > 0 ? -60 : 60,
       opacity: 0,
-      filter: "blur(10px)",
-      transition: { duration: 0.4, ease: [0.4, 0, 1, 1] },
+      filter: "blur(12px)",
+      transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
     }),
   };
 
   // Fallback to static if no slides
-  const currentSlideData = isSlidesArray ? slides[currentSlide] : {
-    title: t("hero.title"),
-    subtitle: t("hero.subtitle"),
-    ctaPrimary: t("hero.ctaPrimary"),
-    ctaSecondary: t("hero.ctaSecondary"),
-  };
+  const currentSlideData = isSlidesArray
+    ? slides[currentSlide]
+    : {
+        title: t("hero.title"),
+        subtitle: t("hero.subtitle"),
+        ctaPrimary: t("hero.ctaPrimary"),
+        ctaSecondary: t("hero.ctaSecondary"),
+      };
 
   const titleWords = currentSlideData.title.split(" ");
-  
-  // Dynamic Background variations
-  const bgs = [
-    { circle1: "var(--accent)", circle2: "#06B6D4" },
-    { circle1: "#06B6D4", circle2: "var(--accent)" },
-    { circle1: "var(--gold)", circle2: "var(--accent)" }
-  ];
-  const bg = bgs[currentSlide % bgs.length];
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 pointer-events-none transition-colors duration-1000">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* ── Background Effects ── */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-900 via-[#0e0f14] to-[#0e0f14]">
+        {/* Radial glow */}
         <div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(26, 86, 219, 0.06) 0%, transparent 70%)",
+            background:
+              "radial-gradient(ellipse 70% 50% at 50% 40%, rgba(232, 77, 42, 0.08) 0%, transparent 70%)",
           }}
         />
-        <div 
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px] opacity-[0.04] transition-colors duration-1000" 
-          style={{ backgroundColor: bg.circle1 }}
+        {/* Floating orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/5 w-[400px] h-[400px] rounded-full blur-[150px] opacity-[0.06]"
+          style={{ backgroundColor: "#E84D2A" }}
+          animate={{ y: [0, -30, 0], x: [0, 15, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div 
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[120px] opacity-[0.04] transition-colors duration-1000" 
-          style={{ backgroundColor: bg.circle2 }}
+        <motion.div
+          className="absolute bottom-1/3 right-1/5 w-[350px] h-[350px] rounded-full blur-[150px] opacity-[0.05]"
+          style={{ backgroundColor: "#00E5FF" }}
+          animate={{ y: [0, 20, 0], x: [0, -20, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 60px),
-              repeating-linear-gradient(90deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 60px)`,
-          }}
-        />
+        {/* Grid overlay */}
+        <div className="absolute inset-0 grid-overlay opacity-40" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* LEFT — Text */}
-          <div className="relative min-h-[500px] flex flex-col justify-center">
-            
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={currentSlide}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="w-full"
-              >
-                {/* Badge */}
-                <div
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-light)] mb-8"
-                >
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-60" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]" />
-                  </span>
-                  <span className="text-[var(--accent)] text-xs font-bold tracking-wider uppercase">
-                    {t("hero.badge")}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h1
-                  className="font-display font-bold tracking-tight mb-6"
-                  style={{ fontSize: "clamp(2.5rem, 7vw, 5.5rem)", lineHeight: 1.1 }}
-                >
-                  {titleWords.map((word: string, i: number) => (
-                    <span
-                      key={i}
-                      className="inline-block mr-[0.3em]"
-                    >
-                      {word.toLowerCase().includes("digital") || word.toLowerCase().includes("innovation") ? (
-                        <GradientText>{word}</GradientText>
-                      ) : (
-                        word
-                      )}
-                    </span>
-                  ))}
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-xl text-[var(--text-secondary)] max-w-xl mb-10 leading-relaxed">
-                  {currentSlideData.subtitle}
-                </p>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Button href="/contact" variant="primary" size="lg" magnetic>
-                    {currentSlideData.ctaPrimary} <span className="ml-2">→</span>
-                  </Button>
-                  <Button href="/services" variant="secondary" size="lg">
-                    {currentSlideData.ctaSecondary}
-                  </Button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Slider Navigation (Arrows & Dots) */}
-            {isSlidesArray && (
-              <div className="flex items-center gap-6 mt-4">
-                <button
-                  onClick={() => paginate(-1)}
-                  className="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
-                  aria-label="Précédent"
-                >
-                  <ChevronLeft size={18} />
-                </button>
-                <div className="flex gap-2">
-                  {slides.map((_: any, i: number) => (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setDirection(i > currentSlide ? 1 : -1);
-                        setCurrentSlide(i);
-                      }}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        i === currentSlide
-                          ? "bg-[var(--accent)] w-6"
-                          : "bg-[var(--border)] hover:bg-[var(--border-hover)]"
-                      }`}
-                      aria-label={`Slide ${i + 1}`}
-                    />
-                  ))}
-                </div>
-                <button
-                  onClick={() => paginate(1)}
-                  className="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
-                  aria-label="Suivant"
-                >
-                  <ChevronRight size={18} />
-                </button>
-              </div>
-            )}
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="flex flex-wrap gap-8 md:gap-12 mt-12 pt-8 border-t border-[var(--border)]"
-            >
-              {[
-                { value: 50, suffix: "+", label: t("hero.stats.clients") },
-                { value: 98, suffix: "%", label: t("hero.stats.satisfaction") },
-                { value: 6, suffix: "", label: t("hero.stats.expertise") },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col">
-                  <AnimatedCounter
-                    value={stat.value}
-                    suffix={stat.suffix}
-                    className="text-3xl md:text-4xl font-display font-bold text-[var(--accent)]"
-                  />
-                  <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-semibold mt-1">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* RIGHT — Dashboard Mockup */}
+      {/* ── Content ── */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 pt-32 pb-20 text-center">
+        <AnimatePresence mode="wait" custom={direction}>
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="hidden lg:block"
+            key={currentSlide}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="w-full"
           >
-            <DashboardMockup />
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-md mb-10"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]" />
+              </span>
+              <span className="text-[var(--text-secondary)] text-xs font-bold tracking-wider uppercase">
+                {t("hero.badge")}
+              </span>
+            </motion.div>
+
+            {/* Title — Word by word reveal */}
+            <h1
+              className="font-display font-bold tracking-tight mb-8 leading-[1.08]"
+              style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+            >
+              {titleWords.map((word: string, i: number) => (
+                <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
+                  <motion.span
+                    className="inline-block"
+                    initial={{ y: "120%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    transition={{
+                      delay: 0.15 + i * 0.08,
+                      duration: 1.2,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {word.toLowerCase().includes("digital") ||
+                    word.toLowerCase().includes("innovation") ||
+                    word.toLowerCase().includes("avenir") ||
+                    word.toLowerCase().includes("future") ? (
+                      <GradientText>{word}</GradientText>
+                    ) : (
+                      word
+                    )}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-12 leading-relaxed"
+            >
+              {currentSlideData.subtitle}
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.65, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+            >
+              <Button href="/start-project" variant="primary" size="lg" magnetic>
+                {currentSlideData.ctaPrimary} <span className="ml-2">→</span>
+              </Button>
+              <Button href="/services" variant="secondary" size="lg">
+                {currentSlideData.ctaSecondary}
+              </Button>
+            </motion.div>
           </motion.div>
-        </div>
+        </AnimatePresence>
+
+        {/* Slider Navigation */}
+        {isSlidesArray && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="flex items-center justify-center gap-6"
+          >
+            <button
+              onClick={() => paginate(-1)}
+              className="w-10 h-10 rounded-full border border-white/[0.1] flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all duration-500"
+              aria-label="Précédent"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <div className="flex gap-2.5">
+              {slides.map((_: any, i: number) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setDirection(i > currentSlide ? 1 : -1);
+                    setCurrentSlide(i);
+                  }}
+                  className={`h-2 rounded-full transition-all duration-500 ${
+                    i === currentSlide
+                      ? "bg-[var(--accent)] w-8"
+                      : "bg-white/[0.15] w-2 hover:bg-white/[0.3]"
+                  }`}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => paginate(1)}
+              className="w-10 h-10 rounded-full border border-white/[0.1] flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all duration-500"
+              aria-label="Suivant"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </motion.div>
+        )}
+
+        {/* Stats Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex flex-wrap justify-center gap-10 md:gap-16 mt-16 pt-10 border-t border-white/[0.06]"
+        >
+          {[
+            { value: 50, suffix: "+", label: t("hero.stats.clients") },
+            { value: 98, suffix: "%", label: t("hero.stats.satisfaction") },
+            { value: 6, suffix: "", label: t("hero.stats.expertise") },
+          ].map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center">
+              <AnimatedCounter
+                value={stat.value}
+                suffix={stat.suffix}
+                className="text-3xl md:text-4xl font-display font-bold text-white"
+              />
+              <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-semibold mt-1.5">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </motion.div>
       </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <span className="text-[var(--text-muted)] text-[10px] uppercase tracking-[0.25em] font-bold">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown size={18} className="text-[var(--text-muted)]" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

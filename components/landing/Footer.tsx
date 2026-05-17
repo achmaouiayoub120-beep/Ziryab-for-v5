@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { SITE_CONFIG, SERVICES } from "@/lib/constants";
-import { MapPin, Mail, Phone, Heart } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const LinkedinIcon = ({ size = 18 }: { size?: number }) => (
@@ -48,16 +49,16 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[var(--text-primary)] text-white pt-20 pb-8 relative overflow-hidden" suppressHydrationWarning>
-      {/* Decorative gradient blur */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-[var(--accent)] opacity-5 blur-[120px] pointer-events-none rounded-full" />
+    <footer className="bg-[var(--bg)] pt-20 pb-8 relative overflow-hidden border-t border-white/[0.04]" suppressHydrationWarning>
+      {/* Decorative glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[250px] bg-[var(--glow)] opacity-[0.03] blur-[150px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand Col (lg:col-span-2) */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6 group">
-              <div className="relative h-16 w-[140px] transition-transform duration-300 group-hover:scale-105">
+              <div className="relative h-14 w-[120px] transition-transform duration-500 group-hover:scale-105">
                 <Image
                   src="/logo.png"
                   alt="ZiryabTec Logo"
@@ -66,11 +67,11 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <p className="text-white/60 text-sm leading-relaxed mb-4 max-w-sm">
+            <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-6 max-w-sm">
               {t("footer.desc")}
             </p>
 
-            {/* Social Icons */}
+            {/* Social Icons — Neon hover */}
             <div className="flex gap-3 mb-8">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
@@ -80,7 +81,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors"
+                    className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--glow)] hover:border-[var(--glow)]/40 hover:shadow-[0_0_20px_rgba(0,229,255,0.1)] transition-all duration-500"
                     aria-label={social.label}
                   >
                     <Icon size={18} />
@@ -91,15 +92,15 @@ export default function Footer() {
 
             {/* Contact Info */}
             <div className="space-y-3 text-sm">
-              <a href={`tel:${SITE_CONFIG.phone?.replace(/\s+/g, "")}`} className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <a href={`tel:${SITE_CONFIG.phone?.replace(/\s+/g, "")}`} className="flex items-center gap-2.5 text-[var(--text-muted)] hover:text-white transition-colors duration-300">
                 <Phone size={14} className="text-[var(--accent)]" />
                 {SITE_CONFIG.phone}
               </a>
-              <a href={`mailto:${SITE_CONFIG.email}`} className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <a href={`mailto:${SITE_CONFIG.email}`} className="flex items-center gap-2.5 text-[var(--text-muted)] hover:text-white transition-colors duration-300">
                 <Mail size={14} className="text-[var(--accent)]" />
                 {SITE_CONFIG.email}
               </a>
-              <p className="flex items-center gap-2 text-white/60">
+              <p className="flex items-center gap-2.5 text-[var(--text-muted)]">
                 <MapPin size={14} className="text-[var(--accent)]" />
                 {SITE_CONFIG.location}
               </p>
@@ -116,7 +117,7 @@ export default function Footer() {
                 <li key={service.id}>
                   <Link
                     href={`/services/${service.id}`}
-                    className="text-white/60 hover:text-[var(--accent)] text-sm transition-colors"
+                    className="text-[var(--text-muted)] hover:text-[var(--accent)] text-sm transition-colors duration-300"
                   >
                     {t(`services.items.${service.id}.title`)}
                   </Link>
@@ -135,7 +136,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/60 hover:text-[var(--accent)] text-sm transition-colors"
+                    className="text-[var(--text-muted)] hover:text-[var(--accent)] text-sm transition-colors duration-300"
                   >
                     {link.name}
                   </Link>
@@ -154,7 +155,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-white/60 hover:text-[var(--accent)] text-sm transition-colors"
+                    className="text-[var(--text-muted)] hover:text-[var(--accent)] text-sm transition-colors duration-300"
                   >
                     {link.name}
                   </a>
@@ -165,12 +166,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/40 text-xs">
+        <div className="pt-8 border-t border-white/[0.06] flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-[var(--text-muted)] text-xs">
             © {currentYear} {SITE_CONFIG.name}. {t("footer.rights")}
           </p>
-          <p className="flex items-center gap-1.5 text-white/40 text-xs">
-            {language === 'fr' ? 'Fièrement conçu au Maroc' : 'Proudly designed in Morocco'} <span className="text-sm leading-none">🇲🇦</span>
+          <p className="flex items-center gap-1.5 text-[var(--text-muted)] text-xs">
+            {language === "fr"
+              ? "Fièrement conçu au Maroc"
+              : "Proudly designed in Morocco"}{" "}
+            <span className="text-sm leading-none">🇲🇦</span>
           </p>
         </div>
       </div>

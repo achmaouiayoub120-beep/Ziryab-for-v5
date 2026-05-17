@@ -33,7 +33,6 @@ export function Button({
     const { height, width, left, top } = buttonRef.current.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
-    // Limit the magnetic effect to a fraction of the distance (15%)
     setPosition({ x: middleX * 0.15, y: middleY * 0.15 });
   };
 
@@ -43,9 +42,12 @@ export function Button({
   };
 
   const variants = {
-    primary: "bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] shadow-[0_0_20px_rgba(26,86,219,0.3)]",
-    secondary: "bg-transparent border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)]",
-    ghost: "bg-transparent text-[var(--text-primary)] hover:text-[var(--accent)]",
+    primary:
+      "bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] shadow-[0_0_24px_var(--accent-glow)] hover:shadow-[0_0_40px_var(--accent-glow)]",
+    secondary:
+      "bg-transparent border border-[rgba(255,255,255,0.12)] text-[var(--text-primary)] hover:border-[var(--glow)] hover:text-[var(--glow)] hover:shadow-[0_0_20px_rgba(0,229,255,0.1)]",
+    ghost:
+      "bg-transparent text-[var(--text-secondary)] hover:text-[var(--accent)]",
   };
 
   const sizes = {
@@ -55,7 +57,7 @@ export function Button({
   };
 
   const commonClasses = cn(
-    "inline-flex items-center justify-center font-bold rounded-[8px] transition-colors duration-300",
+    "inline-flex items-center justify-center font-bold rounded-[var(--radius-md)] transition-all duration-500",
     variants[variant],
     sizes[size],
     className
@@ -69,7 +71,7 @@ export function Button({
         href={href}
         ref={buttonRef as any}
         className={commonClasses}
-        whileHover={{ scale: 1.03, y: -2 }}
+        whileHover={{ scale: 1.04, y: -2 }}
         whileTap={{ scale: 0.96 }}
         animate={{ x: position.x, y: position.y }}
         transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
@@ -86,7 +88,7 @@ export function Button({
     <motion.button
       ref={buttonRef as any}
       className={commonClasses}
-      whileHover={{ scale: 1.03, y: -2 }}
+      whileHover={{ scale: 1.04, y: -2 }}
       whileTap={{ scale: 0.96 }}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
