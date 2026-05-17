@@ -343,7 +343,7 @@ export default function ServicesPreview() {
                 
                 {/* Magnetic Shimmer CTA */}
                 <MagneticButton 
-                  href="https://ziryabtec-qnsv.vercel.app"
+                  href="https://ziryab-for-v4.vercel.app"
                   className="inline-flex items-center gap-4 px-10 py-5 rounded-full bg-white text-black font-black text-lg shadow-[0_0_50px_rgba(255,255,255,0.2)] group/btn overflow-hidden relative"
                 >
                   <div className="absolute inset-0 w-[200%] translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-black/10 to-transparent" />
@@ -360,7 +360,7 @@ export default function ServicesPreview() {
                   className="absolute inset-0 rounded-3xl overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.6)] bg-black/40 backdrop-blur-md transform -rotate-2 group-hover:rotate-0 transition-transform duration-1000 ease-out z-10"
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop"
+                    src="https://image.thum.io/get/width/1200/crop/800/https://ziryab-for-v4.vercel.app/"
                     alt="ZiryabTec Academy Master Pro Max"
                     className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1.5s] ease-out"
                   />

@@ -177,7 +177,7 @@ export default function FeaturedProjects() {
                 
                 {/* Huge Shimmer CTA Button */}
                 <a 
-                  href="https://ziryabtec-qnsv.vercel.app"
+                  href="https://ziryab-for-v4.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 px-8 py-5 rounded-full bg-white text-black font-bold text-lg transition-transform duration-300 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.2)] group/btn overflow-hidden relative"
